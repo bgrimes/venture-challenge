@@ -1,0 +1,25 @@
+<h1>Admin!</h1>
+
+<div class="venture-list">
+  <a class="btn btn-primary" ng-click="predicate='enabled'; reverse=!reverse"><i class="icon-sort"></i> Sort By Acceptance</a>
+  <hr>
+  <div ng-repeat="venture in ventures | orderBy:predicate:reverse" class="row">
+    <div class="span4">
+      <iframe src="{{venture.videoEmbedLink}}" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+    </div>
+    <div class="span4">
+      <h4><a href="#/venture/{{venture.id}}">{{venture.ventureInfo.ventureName}}</a></h4>
+      <p>{{venture.ventureInfo.ventureDescription}}</p>
+      <p class="text-info"><a href="#/venture/{{venture.id}}"><i class="icon-chevron-right"></i> Click to View Venture</a></p>
+    </div>
+    <div class="pull-right">
+      <div class="well" style="padding:0 10px 10px 10px;text-align:center;">
+        <h3 ng-class="{'text-success': venture.enabled, 'text-error':!venture.enabled}">{{venture.enabled && "Approved!" || "Awaiting Approval"}}</h3>
+        <a class="btn btn-success" ng-click="approve(venture.id, $event)" ui-if="!venture.enabled"><i class="icon-thumbs-up"></i> Approve</a>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+  </div>
+</div>

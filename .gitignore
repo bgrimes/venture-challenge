@@ -1,0 +1,14 @@
+.idea
+.DS_STORE
+._*
+api/vendor
+api/composer.phar
+api/composer.lock
+api/.htaccess
+api/config/config.yml
+api/web/development.log
+upload.log.txt
+
+app/js/app.js
+
+uploads/*

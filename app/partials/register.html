@@ -1,0 +1,253 @@
+<form novalidate name="registerForm" class="register-form form-horizontal" xmlns="http://www.w3.org/1999/html">
+
+  <!-- It's a web form wizard, there has to be a twist, a web form wizard, s'got such a supple wrist -->
+
+  <ul class="nav nav-tabs">
+    <li ng-repeat="step in steps" ng-class="{active: $index==getCurrentStepIndex()}">
+      <a href="javascript:void(0)" ng-click="goToStep($index)">{{step}}</a>
+    </li>
+  </ul>
+  <div ng-switch on="selection">
+
+    <!-- First Step -->
+    <div ng-switch-when="Step 1: Team Info">
+      <div class="row">
+        <div class="span10">
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="teamName">Team Name</label>
+            <div class="controls">
+              <input type="text" id="teamName" name="teamName" placeholder="Team Name" ng-model="registrationInfo.teamName" required>
+            </div>
+          </div>
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="teamPhone">Contact Phone</label>
+            <div class="controls">
+              <input type="text" id="teamPhone" name="teamPhone" placeholder="(###)-###-####" ui-mask="'(999)-999-9999'" required ng-model="registrationInfo.teamPhone">
+            </div>
+          </div>
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="inputEmail">Contact Email</label>
+            <div class="controls">
+              <input type="email" id="inputEmail" name="inputEmail" placeholder="Email" required ng-model="registrationInfo.teamEmail">
+            </div>
+          </div>
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="confirmInputEmail">Confirm Email</label>
+            <div class="controls">
+              <input type="email" id="confirmInputEmail" name="confirmInputEmail" placeholder="Confirm Email" required ui-validate='{emailMatch: emailMatch}' ng-model="registrationInfo.confirmEmail">
+              <span class="help-inline" ui-show="registerForm.confirmInputEmail.$error.emailMatch">Emails must match!</span>
+            </div>
+          </div>
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="inputPassword">Password</label>
+            <div class="controls">
+              <input type="password" id="inputPassword" name="inputPassword" placeholder="Password" ng-model="registrationInfo.teamPassword" required>
+            </div>
+          </div>
+          <!-- -->
+          <div class="control-group">
+            <label class="control-label" for="confirmPassword">Confirm Password</label>
+            <div class="controls">
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter Password" ng-model="registrationInfo.confirmPassword" ui-validate='{passwordMatch: passwordMatch}' required>
+              <span class="help-inline" ui-show="registerForm.confirmPassword.$error.passwordMatch">Passwords must match!</span>
+            </div>
+          </div>
+          <!-- -->
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <!-- Second Step -->
+    <div ng-switch-when="Step 2: Team Members">
+      <div class="row">
+
+        <div class="span10">
+
+          <div class="control-group">
+            <label class="control-label" for="teamName">Team Image</label>
+            <div class="controls">
+              <div venture-uploader="{ upload_script : 'upload.php?action=uploadTeamImage', allowedFileTypes : ['gif','png','jpg'] }" ng-model="registrationInfo.teamPicture"></div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Team Members
+              <a ng-click="addTeamMember()" class="btn btn-primary btn-mini" data-original-title="Add Team Member" ui-jq="tooltip"><i class="icon-plus"></i></a>
+            </label>
+            <div class="controls team-members">
+
+              <div ng-repeat="teamMember in registrationInfo.teamMembers" ui-animate>
+
+                <!-- EDIT MODE -->
+                <div ng-show="teamMember.editMode" class="team-member-edit-mode">
+                  <div class="pull-right team-member-actions">
+                    <!-- Save changes -->
+                    <div class="team-member-action save" data-original-title="Save Changes" ui-jq="tooltip" ng-click="toggleEditTeamMember($index)"><i class="icon-ok"></i></div>
+                    <!-- Delete -->
+                    <div class="team-member-action delete" data-original-title="Remove Team Member" ui-jq="tooltip" ng-click="removeTeamMember($index)"><i class="icon-minus-sign"></i></div>
+                  </div>
+
+                  <label>Full Name*</label><input type="text" placeholder="Full Name" ng-model="teamMember.fullname">
+                  <label>Email*</label><input type="email" placeholder="Email address" ng-model="teamMember.email">
+                  <label>Major*</label><input type="text" placeholder="Major" ng-model="teamMember.major">
+                  <label>Progression*</label>
+                  <select style="width:100%" ui-select2 ng-model="teamMember.progression">
+                    <option value="">Pick one:</option>
+                    <option value="Freshman">Freshman</option>
+                    <option value="Sophomore">Sophomore</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Senior">Senior</option>
+                    <option value="Graduate-MA">Graduate-MA</option>
+                    <option value="Graduate-PhD">Graduate-PhD</option>
+                  </select>
+                </div>
+
+                <!-- READ MODE -->
+                <div ng-hide="teamMember.editMode" class="team-member-read-mode">
+                  <div class="pull-right team-member-actions">
+                    <!-- Save changes -->
+                    <div class="team-member-action" data-original-title="Edit Team Member" ui-jq="tooltip" ng-click="toggleEditTeamMember($index)"><i class="icon-pencil"></i></div>
+                    <!-- Delete -->
+                    <div class="team-member-action delete" data-original-title="Remove Team Member" ui-jq="tooltip" ng-click="removeTeamMember($index)"><i class="icon-minus-sign"></i></div>
+                  </div>
+                  <div class="clearfix"></div>
+                  <dl class="dl-horizontal">
+                    <dt>Full Name</dt>
+                    <dd>{{teamMember.fullname}}&nbsp;</dd>
+                    <dt>Email</dt>
+                    <dd>{{teamMember.email}}&nbsp;</dd>
+                    <dt>Major</dt>
+                    <dd>{{teamMember.major}}&nbsp;</dd>
+                    <dt>Progression</dt>
+                    <dd>{{teamMember.progression}}&nbsp;</dd>
+                  </dl>
+                </div>
+              </div>
+
+              <!-- name, email, major, year -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Third Step -->
+    <div ng-switch-when="Step 3: Campaign Info">
+
+      <!-- -->
+      <div class="control-group">
+        <label class="control-label" for="ventureName">Venture Name</label>
+        <div class="controls">
+          <input type="text" id="ventureName" class="span6" placeholder="Venture Name" ng-model="registrationInfo.ventureName" required>
+        </div>
+      </div>
+      <!-- -->
+      <div class="control-group">
+        <label class="control-label">Category</label>
+        <div class="controls">
+          <select ui-select2 ng-model="registrationInfo.ventureType" data-placeholder="Select one:" style="width:220px;" required>
+            <option></option>
+            <option value="Undergraduate concept">Undergraduate concept</option>
+            <option value="Undergraduate plan">Undergraduate plan</option>
+            <option value="Graduate concept">Graduate concept</option>
+            <option value="Graduate plan">Graduate plan</option>
+          </select>
+        </div>
+      </div>
+      <!-- -->
+      <div class="control-group">
+        <label class="control-label" for="ventureDescription">Description of Venture <i>(100-150 words)</i></label>
+        <div class="controls">
+          <textarea id="ventureDescription" ng-model="registrationInfo.ventureDescription" rows="8" class="span6" required></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fourth Step -->
+    <div ng-switch-when="Step 4: Campaign Media">
+      <!-- -->
+      <div class="control-group">
+        <label class="control-label" for="ventureVideoLink">Link to video (Optional, YouTube or Vimeo only, 2 minutes maximum length)</label>
+        <div class="controls">
+          <input type="text" id="ventureVideoLink" class="span6" placeholder="Venture Video Link" ng-model="registrationInfo.ventureVideoLink">
+        </div>
+      </div>
+      <!-- -->
+      <div class="control-group">
+        <label class="control-label" for="teamName">Venture Images (Optional, up to 4)</label>
+        <div class="controls">
+          <div class="venture-image">
+            <div class="pull-left">
+              <img ui-hide="registrationInfo.ventureImages.1 != null" src="http://placehold.it/150x150">
+              <img ui-hide="registrationInfo.ventureImages.1 == null" ng-src="{{root_url}}/{{registrationInfo.ventureImages.1}}"/>
+            </div>
+            <div class="pull-left">
+              <div venture-uploader="{ upload_script : '/upload.php?action=uploadVentureImage', allowedFileTypes : ['gif','png','jpg'], buttonText:'Upload First Image' }" ng-model="registrationInfo.ventureImages.1"></div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="venture-image" ui-hide="registrationInfo.ventureImages.1 == null">
+              <div class="pull-left">
+                <img ui-hide="registrationInfo.ventureImages.2 != null" src="http://placehold.it/150x150">
+                <img ui-hide="registrationInfo.ventureImages.2 == null" ng-src="{{root_url}}/{{registrationInfo.ventureImages.2}}"/>
+              </div>
+              <div class="pull-left">
+                <div venture-uploader="{ upload_script : '/upload.php?action=uploadVentureImage', allowedFileTypes : ['gif','png','jpg'], buttonText:'Upload Second Image' }" ng-model="registrationInfo.ventureImages.2"></div>
+              </div>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="venture-image" ui-hide="registrationInfo.ventureImages.2 == null">
+            <div class="pull-left">
+              <img ui-hide="registrationInfo.ventureImages.3 != null" src="http://placehold.it/150x150">
+              <img ui-hide="registrationInfo.ventureImages.3 == null" ng-src="{{root_url}}/{{registrationInfo.ventureImages.3}}"/>
+            </div>
+            <div class="pull-left">
+              <div venture-uploader="{ upload_script : '/upload.php?action=uploadVentureImage', allowedFileTypes : ['gif','png','jpg'], buttonText:'Upload Third Image' }" ng-model="registrationInfo.ventureImages.3"></div>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="venture-image" ui-hide="registrationInfo.ventureImages.3 == null">
+            <div class="pull-left">
+              <img ui-hide="registrationInfo.ventureImages.4 != null" src="http://placehold.it/150x150">
+              <img ui-hide="registrationInfo.ventureImages.4 == null" ng-src="{{root_url}}/{{registrationInfo.ventureImages.4}}"/>
+            </div>
+            <div class="pull-left">
+              <div venture-uploader="{ upload_script : '/upload.php?action=uploadVentureImage', allowedFileTypes : ['gif','png','jpg'], buttonText:'Upload Fourth Image' }" ng-model="registrationInfo.ventureImages.4"></div>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="clearfix"></div>
+
+  <ul class="pager pull-left">
+    <li class="" ng-class="{disabled: !hasPreviousStep()}">
+      <a href="javascript:void(0);" ng-click="decrementStep()">&larr; Previous Step</a>
+    </li>
+    <li class="" ng-class="{disabled: !hasNextStep()}">
+      <a href="javascript:void(0);" ng-click="incrementStep()">Next Step &rarr;</a>
+    </li>
+  </ul>
+
+  <div class="pull-right"><button style="margin:20px 0;" ng-disabled="formInvalid(registerForm)" ng-click="register()" class="btn btn-success">Confirm and Register</button></div>
+  <div class="clearfix"></div>
+</form>

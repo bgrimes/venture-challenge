@@ -1,0 +1,142 @@
+/* app css stylesheet */
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}
+
+
+.register-form input.ng-invalid.ng-dirty {
+  background-color: #FA787E;
+}
+
+.register-form input.ng-valid.ng-dirty {
+  background-color: #78FA89;
+}
+
+.nav > li > a.form-dirty {
+  background-color: #FA787E;
+}
+.nav-tabs >li>a.form-dirty {
+  border-color:  #ee5f5b;
+}
+
+span.help-inline{
+  display:none !important;
+}
+span.ui-show {
+  display: block !important;
+}
+
+.ui-hide {
+  display: none !important;
+}
+
+
+/* TEAM MEMBER FORM */
+div.team-members {
+  width:100%;
+}
+
+div.team-member-action {
+  cursor: pointer;
+  display:inline-block;
+  margin-right:5px;
+  margin-left: 4px;
+}
+div.team-member-actions {
+  position:relative;
+  top:-6px;
+  right:-6px;
+  -webkit-border-bottom-left-radius: 4px;
+  border:1px solid #CCC;
+}
+
+div.team-member-action.save {
+  color: #009933;
+}
+div.team-member-action.delete {
+  color: #e9322d;
+}
+
+div.team-member-edit-mode, div.team-member-read-mode{
+  padding: 5px;
+  margin: 5px;
+  width: 400px;
+  border: 1px solid #CCC;
+  -webkit-border-radius: 6px 0 6px 0;
+  -moz-border-radius: 6px 0 6px 0;
+  border-radius: 6px 0 6px 0;
+
+  box-shadow: 5px 5px 10px -4px #CCC;
+  -webkit-box-shadow: 5px 5px 10px -4px #CCC;
+  -moz-box-shadow: 5px 5px 10px -4px #CCC;
+}
+
+div.team-member-read-mode {
+  background: #FFF;
+}
+
+div.team-member-edit-mode {
+  background: #FFF;
+}
+div.team-member-edit-mode input{
+  width: 95% !important;
+  margin-bottom: 10px;
+}
+
+div.team-member-read-mode dl.dl-horizontal dt {
+  width: 100px;
+}
+
+div.team-member-read-mode dl.dl-horizontal dd {
+  margin-left: 120px;
+}
+
+div.control-group.team-image-upload div.controls {
+  display: block;
+  margin-left: 50px;
+}
+
+ul.qq-upload-list {
+  margin-bottom: 10px;
+}
+
+div.venture-image {
+  display: block;
+  clear: both;
+  margin: 15px 0;
+}
+
+div.venture-image img {
+  max-width:  150px;
+  max-height: 150px;
+
+}
+div.venture-image > div:first-child {
+  width: 150px;
+}

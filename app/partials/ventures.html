@@ -1,0 +1,27 @@
+
+<div class="venture-list">
+  <div class="pull-right">
+    <a class="btn btn-primary" ng-click="predicate='votes'; reverse=!reverse"><i class="icon-sort"></i> Sort By Votes</a>
+  </div>
+  <div class="clearfix"></div>
+  <hr>
+  <div ng-repeat="venture in ventures | orderBy:predicate:reverse" class="row">
+    <div class="span4">
+      <iframe src="{{venture.videoEmbedLink}}" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+    </div>
+    <div class="span4">
+      <h4><a href="#/venture/{{venture.id}}">{{venture.ventureInfo.ventureName}}</a></h4>
+      <p>{{venture.ventureInfo.ventureDescription}}</p>
+      <p class="text-info"><a href="#/venture/{{venture.id}}"><i class="icon-chevron-right"></i> Click to View Venture</a></p>
+    </div>
+    <div class="pull-right">
+      <div class="well" style="padding:0 10px 10px 10px;text-align:center;">
+        <h3 class="text-success">{{venture.votes}} Votes</h3>
+        <a class="btn btn-success" ng-click="upvote(venture.id, $event)" ui-if="venture.voteable"><i class="icon-thumbs-up"></i> Vote</a>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+  </div>
+</div>

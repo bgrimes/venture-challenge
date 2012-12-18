@@ -1,0 +1,59 @@
+<div class="row" xmlns="http://www.w3.org/1999/html">
+
+  <!-- Side Bar (Venture Team Info -->
+  <div class="pull-right span3">
+
+    <img ui-hide="activeVenture.ventureInfo.teamPicture == null" ng-src="/ci-inet-student/{{activeVenture.ventureInfo.teamPicture}}"/>
+    <h4>{{activeVenture.ventureInfo.teamName}}</h4>
+    <ul>
+      <li ng-repeat="teamMate in activeVenture.ventureInfo.teamMembers">{{teamMate.fullname}}</li>
+    </ul>
+
+      <a class="btn btn-success" href="http://www.uky.edu" target="_blank">Pledge to Support UK Venture Challenge Student Teams</a>
+
+  </div>
+
+  <!-- Venture Title and Vote -->
+  <div class="span9">
+    <div class="pull-left">
+      <h2>{{activeVenture.ventureInfo.ventureName}}</h2>
+    </div>
+    <div class="pull-right">
+      <div class="well" style="padding:0 10px 10px 10px;text-align:center;">
+        <h3 class="text-success">{{activeVenture.votes}} Votes</h3>
+        <a class="btn btn-success" ng-click="upvote(venture.id, $event)" ui-if="venture.voteable"><i class="icon-thumbs-up"></i> Vote</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Venture Video -->
+  <div ui-hide="activeVenture.videoEmbedLink == false" class="span9" style="height:350px;">
+
+    <iframe src="{{activeVenture.videoEmbedLink}}" width="100%" height="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+  </div>
+
+  <!-- Venture Description -->
+  <div class="span9" style="margin-top:20px;">
+    <p>{{activeVenture.ventureInfo.ventureDescription}}</p>
+  </div>
+
+  <!-- Carousel -->
+  <div ui-hide="activeVenture.ventureInfo.ventureImages.1 == null" class="span9">
+    <div id="ventureCarousel" ui-jq="carousel" class="carousel slide">
+      <!-- Carousel items -->
+      <div class="carousel-inner">
+        <div ng-repeat="ventureImage in activeVenture.ventureImages" class="item">
+
+          <img ng-src="{{root_url}}/{{ventureImage}}"/>
+        </div>
+      </div>
+
+      <!-- Carousel nav -->
+      <a class="carousel-control left" href="#ventureCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="carousel-control right" href="#ventureCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+
+  </div>
+</div>
+

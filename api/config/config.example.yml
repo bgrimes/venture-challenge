@@ -1,0 +1,22 @@
+base_url: "/venture/api"
+
+secret: "E6E45B3FA2432B735D525B2C5FFF4DD3CDF069C2A5F31ADB41EA7E87C7AA95AD"
+
+database:
+  connections:
+    mysql:
+      host:    localhost
+      driver:  mysql
+      user:    exampleuser
+      pass:    examplepass
+      db_name: exampledb
+
+
+swiftmailer:
+  options:
+    host:       'smtp.gmail.com'
+    port:       '465'
+    username:   'example@gmail.com'
+    password:   'examplepass'
+    encryption: 'ssl'
+    auth_mode:  'login'
