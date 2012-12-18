@@ -3,7 +3,7 @@
   <!-- Side Bar (Venture Team Info -->
   <div class="pull-right span3">
 
-    <img ui-hide="activeVenture.ventureInfo.teamPicture == null" ng-src="/ci-inet-student/{{activeVenture.ventureInfo.teamPicture}}"/>
+    <img ui-hide="activeVenture.ventureInfo.teamPicture == null" ng-src="{{root_url}}/{{activeVenture.ventureInfo.teamPicture}}"/>
     <h4>{{activeVenture.ventureInfo.teamName}}</h4>
     <ul>
       <li ng-repeat="teamMate in activeVenture.ventureInfo.teamMembers">{{teamMate.fullname}}</li>

@@ -168,6 +168,7 @@ class Venture
             "ventureInfo"     => $this->getVentureInfo(),
             "videoEmbedLink"  => $this->getEmbedableVideoLink(),
             "enabled"         => $this->getEnabled(),
+            "voteable"        => true,
         );
     }
 
