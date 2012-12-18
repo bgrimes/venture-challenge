@@ -47,7 +47,7 @@ $app->register( new Silex\Provider\MonologServiceProvider(), array(
 $app->register( new \CHH\Silex\CacheServiceProvider(), array(
    'cache.options' => array('file' => array(
        "driver"    => 'filesystem',
-       "directory" => sys_get_temp_dir() . "venture_challenge",
+       "directory" => rtrim(sys_get_temp_dir(), "/") . "/venture_challenge",
    )),
 ));
 
