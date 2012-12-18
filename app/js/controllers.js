@@ -2,7 +2,8 @@
 
 /* Controllers */
 
-function MainCtrl($scope, $route, $routeParams, $location, User, base_url) {
+function MainCtrl($scope, $route, $routeParams, $location, User, base_url, root_url) {
+  $scope.root_url     = root_url;
   $scope.base_url     = base_url;
   $scope.$route       = $route;
   $scope.$location    = $location;
@@ -120,9 +121,8 @@ function AdminCtrl($scope, $route, $routeParams, $location, $log, User, Admin)
  * @param $location
  * @constructor
  */
-function RegisterCtrl($scope, $http, $location, api_url, root_url) {
+function RegisterCtrl($scope, $http, $location, api_url) {
 
-  $scope.root_url = root_url;
   $scope.steps = [
     'Step 1: Team Info',
     'Step 2: Team Members',
