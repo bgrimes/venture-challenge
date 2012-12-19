@@ -55,6 +55,12 @@ $app->register( new \CHH\Silex\CacheServiceProvider(), array(
 $app->register(new Silex\Provider\SwiftmailerServiceProvider());
 $app['swiftmailer.options'] = $config['swiftmailer']['options'];
 
+// Register the session service provider
+$app->register(new Silex\Provider\SessionServiceProvider());
+$app['session.storage.options'] = array(
+    "cookie_lifetime" => 60*60*24,
+);
+
 /*
  * Convert any json request to an array before the request is handled
  */
@@ -69,6 +75,17 @@ $app->before( function (Request $request)
 
 // Test
 $app->get($appDirectory . '/', function(Request $request) use ($app, $em) {
+
+    if ( null === $user = $app['session']->get('user') )
+    {
+        $app['session']->set('user', array(1,2,3,4));
+        var_dump("ACK NOT SET\n");
+    }
+    else
+    {
+        var_dump("USER SET\n", $user);
+    }
+    die;
 
     var_dump($_SERVER, $_COOKIE);die;
 
@@ -103,7 +120,15 @@ $app->run();
  *
  * @return string
  */
-function getRemoteId()
+function getRemoteId($session)
 {
-    return md5($_SERVER['REMOTE_ADDR']);
+    // Check if the user session object exists
+    if ( null === $identifier = $session->get['identifier'] )
+    {
+        // Create the identifier object using uniqid which creates a 13 character unique id based on the current time
+        $identifier = uniqid();
+        $session->set("identifier", $identifier);
+    }
+
+    return $identifier;
 }
