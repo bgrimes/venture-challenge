@@ -7,6 +7,7 @@ require_once __DIR__ . "/../Entity/Venture.php";
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 use CHH\Silex\CacheServiceProvider;
 
@@ -118,12 +119,14 @@ $app->run();
 /**
  * Returns a unique id that is based on the users ip address
  *
+ * @param \Symfony\Component\HttpFoundation\Session\Session $session
+ *
  * @return string
  */
-function getRemoteId($session)
+function getRemoteId(Session $session)
 {
     // Check if the user session object exists
-    if ( null === $identifier = $session->get['identifier'] )
+    if ( null === $identifier = $session->get('identifier') )
     {
         // Create the identifier object using uniqid which creates a 13 character unique id based on the current time
         $identifier = uniqid();
