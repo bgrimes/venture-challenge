@@ -38,7 +38,7 @@ $app->get( $appDirectory . '/venture', function (Request $request) use ($app, $e
 
     // Get the cache service and the users unique id
     $cache  = $app['caches']['file'];
-    $userId = getRemoteId();
+    $userId = getRemoteId($app['session']);
     $userCache = $cache->fetch($userId);
     // If the user has any cached votes
     if ( isset($userCache['ventureVotes']) )
@@ -76,7 +76,7 @@ $app->post($appDirectory . '/venture/upvote', function(Request $request) use ($a
     }
 
     $cache  = $app['caches']['file'];
-    $userId = getRemoteId();
+    $userId = getRemoteId($app['session']);
 
     $userCache = $cache->fetch($userId);
 
