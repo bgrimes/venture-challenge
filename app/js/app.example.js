@@ -15,7 +15,7 @@ angular.module('ventureChallenge', ['ventureChallenge.filters', 'ventureChalleng
   config(['$routeProvider', function($routeProvider) {
   var base_dir = '/ci-inet-student/app/';
 
-  $routeProvider.when('/', {templateUrl:'partials/ventures.html', controller: VentureCtrl});
+  $routeProvider.when('/', {templateUrl:base_dir + 'partials/ventures.html', controller: VentureCtrl});
   $routeProvider.when('/venture/:ventureId', {templateUrl: base_dir + 'partials/venture_view.html', controller: VentureCtrl});
   //$routeProvider.when('/campaigns', {templateUrl:'partials/campaigns.html', controller: CampaignCtrl});
   //$routeProvider.when('/campaign/:campaignId', {templateUrl:'partials/campaign.html', controller: CampaignCtrl});
@@ -23,6 +23,7 @@ angular.module('ventureChallenge', ['ventureChallenge.filters', 'ventureChalleng
 
   // Admin routes
   $routeProvider.when('/admin', {templateUrl: base_dir + 'partials/admin/admin.html', controller: AdminCtrl});
+  $routeProvider.when('/admin/venture/:ventureId', {templateUrl: base_dir + 'partials/venture_view.html', controller: AdminCtrl});
 
   // Register path/controller
   $routeProvider.when('/register', {templateUrl:base_dir + 'partials/register.html', controller: RegisterCtrl});

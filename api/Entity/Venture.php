@@ -231,7 +231,7 @@ class Venture
         $videoLink = $ventureInfo['ventureVideoLink'];
 
         // Check if the video link is well-formed and we can parse out the service name and video ID
-        if ( !preg_match('/^.*(?<service>vimeo|youtube).*\/(watch\?v=)?(?<videoId>[a-zA-Z0-9]+)/', $videoLink, $matches) )
+        if ( !preg_match('/^.*(?<service>vimeo|youtube).*\/(watch\?v=)?(?<videoId>[a-zA-Z0-9_]+)/', $videoLink, $matches) )
         {
             return false;
         }

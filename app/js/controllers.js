@@ -97,6 +97,9 @@ function AdminCtrl($scope, $route, $routeParams, $location, $log, User, Admin)
       venture_promise.then(function(){
         // Set the local ventures to the passed
         $scope.ventures      = Admin.self.ventures;
+        // Set the local ventures to the passed
+        $scope.ventures      = Admin.self.ventures;
+        $scope.activeVenture = Admin.getVenture($routeParams.ventureId);
       }, function(){
         // There was an error (the promise was rejected)
       });
@@ -106,6 +109,10 @@ function AdminCtrl($scope, $route, $routeParams, $location, $log, User, Admin)
     {
       $scope.ventures = Admin.self.ventures;
     }
+
+    // Will set the active venture attribute if the id is set
+    $scope.activeVenture = Admin.getVenture($routeParams.ventureId);
+
     //$log.info(['admin routechange', $scope.ventures]);
   });
 

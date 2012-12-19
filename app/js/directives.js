@@ -12,7 +12,6 @@ angular.module('ventureChallenge.directives', []).
 
 angular.module('ventureChallenge.directives').directive('ventureUploader', function($parse, root_url){
   return function(scope, elm, attrs, controller) {
-    console.log(root_url);
     var expression = (attrs.ventureUploader);
     var options    = scope.$eval(expression);
     var ngModel    = $parse(attrs.ngModel);
@@ -42,7 +41,6 @@ angular.module('ventureChallenge.directives').directive('ventureUploader', funct
     //scope.$parent.$root.resourceInfo.fId = [];
     var url        = params.url;
     var fileCount  = 0;
-    var addedFiles = 0;
     var fileLimit  = params.file_limit;
 
     // Init the uploader object
