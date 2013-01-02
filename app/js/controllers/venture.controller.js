@@ -1,5 +1,7 @@
 
 
+// @todo filter ventureDesc to 300 characters (with ellipsis)
+
 function VentureCtrl($scope, $routeParams, Venture) {
   $scope.ventures      = [];
   $scope.activeVenture = null;

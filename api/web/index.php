@@ -53,8 +53,14 @@ $app->register( new \CHH\Silex\CacheServiceProvider(), array(
 ));
 
 // Register swiftmailer
-$app->register(new Silex\Provider\SwiftmailerServiceProvider());
-$app['swiftmailer.options'] = $config['swiftmailer']['options'];
+$app->register(new Silex\Provider\SwiftmailerServiceProvider(), array(
+    'swiftmailer.options' => $config['swiftmailer']['options'],
+));
+// http://stackoverflow.com/questions/13055907/silex-swiftmailer-not-making-smtp-connection-upon-execution
+// Re-configure the mailer service to use the ESMTP transport directly without going through the spool:
+$app['mailer'] = $app->share(function ($app) {
+    return new \Swift_Mailer($app['swiftmailer.transport']);
+});
 
 // Register the session service provider
 $app->register(new Silex\Provider\SessionServiceProvider());
@@ -76,6 +82,39 @@ $app->before( function (Request $request)
 
 // Test
 $app->get($appDirectory . '/', function(Request $request) use ($app, $em) {
+
+
+    $repo    = $em->getRepository( 'Venture' );
+    $admins = $repo->findBy(array('roles'=>'admin'));
+    var_dump($admins);die;
+
+    $message = $app['mailer']
+            ->createMessage()
+            ->setFrom("transcriptdb@gmail.com")
+            ->setTo(array("bgrimes@gmail.com"))
+            ->setSubject("Welcome")
+            ->setBody("<h1>Hery</h1>", "text/html")
+    ;
+    $app['mailer']->send($message, $fails);
+//
+//    if ($app['mailer.initialized']) {
+//        $app['swiftmailer.spooltransport']->getSpool()->flushQueue($app['swiftmailer.transport']);
+//    }
+    var_dump($fails); die;
+    die;
+    /* */
+
+        $message = \Swift_Message::newInstance();
+
+        $message->setFrom("transcriptdb@gmail.com");
+        $message->setTo(array("bgrimes@gmail.com"));
+        $message->setBody("<h1>Hey</h1>", "text/html");
+        $message->setSubject("Welcome");
+
+        var_dump($app['mailer']->send($message)); die;
+
+    /* */
+
 
     if ( null === $user = $app['session']->get('user') )
     {

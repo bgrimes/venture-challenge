@@ -217,7 +217,7 @@ class Venture
         return md5( $password . $this->salt );
     }
 
-    public function getEmbedableVideoLink($height=150, $width=220)
+    public function getEmbedableVideoLink()
     {
         // Get the venture info array from the attribute
         $ventureInfo = $this->getVentureInfo();

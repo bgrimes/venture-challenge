@@ -80,7 +80,6 @@
 
           <div class="control-group">
             <label class="control-label">Team Members
-              <a ng-click="addTeamMember()" class="btn btn-primary btn-mini" data-original-title="Add Team Member" ui-jq="tooltip"><i class="icon-plus"></i></a>
             </label>
             <div class="controls team-members">
 
@@ -130,8 +129,10 @@
                     <dd>{{teamMember.progression}}&nbsp;</dd>
                   </dl>
                 </div>
+
               </div>
 
+              <a style="margin-left:20px;" ng-click="addTeamMember()" class="btn btn-primary" ui-jq="tooltip"><i class="icon-group"></i> Add a team member</a>
               <!-- name, email, major, year -->
             </div>
           </div>

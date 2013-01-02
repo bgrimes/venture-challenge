@@ -1,5 +1,6 @@
 /* app css stylesheet */
 
+/* * /
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;
@@ -29,6 +30,22 @@
   padding: 0;
 }
 
+/* */
+
+div.site-header h2 {
+  margin: 0;
+}
+div.site-header h2 a {
+  color: #333;
+}
+div.site-header h2 a:hover {
+  text-decoration: none;
+}
+
+div#ventureChallenge {
+  font: 12px/1.7em 'Open Sans', arial, sans-serif;
+  background: #FFF;
+}
 
 .register-form input.ng-invalid.ng-dirty {
   background-color: #FA787E;

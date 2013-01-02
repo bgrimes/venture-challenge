@@ -8,6 +8,7 @@
 // Declare app level module which depends on filters, and services
 angular.module('ventureChallenge', ['ventureChallenge.filters', 'ventureChallenge.services', 'ventureChallenge.directives', 'ngCookies', 'ngResource', 'ui']).
 
+  value('site_title', 'Venture Challenge').
   value('root_url', 'http://localhost/ci-inet-student').
   value('base_url', 'http://localhost/ci-inet-student/app').
   value('api_url',  'http://localhost/ci-inet-student/api').

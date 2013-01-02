@@ -41,6 +41,7 @@ $app->put( $appDirectory . '/register', function (Request $request) use ($app, $
     $em->persist( $venture );
     $em->flush();
 
+
     /* * /
     $message = \Swift_Message::newInstance();
 

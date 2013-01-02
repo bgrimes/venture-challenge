@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>My AngularJS App</title>
+
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,800">
+
   <link rel="stylesheet" href="css/fine.uploader.css"/>
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.no-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/2.0/css/font-awesome.css" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css"/>
   <link rel="stylesheet" href="js/angular-ui/build/angular-ui.min.css"/>
@@ -23,19 +26,28 @@
   <![endif]-->
 </head>
 <body style="background-color:#CCC;">
-  <div ng-app="ventureChallenge" style="width:960px;background-color:#fff;padding:20px;" ng-controller="MainCtrl">
+  <div id="ventureChallenge" ng-app="ventureChallenge" style="width:960px;background-color:#fff;padding:20px;" ng-controller="MainCtrl">
 
     <div class="pull-right">
-      <div ng-show="User.isAuthenticated()">
-        <a ng-show="!User.isAdmin()" href="javascript:void(0);">Edit Campaign</a>
-        <a ng-show="User.isAdmin()" href="#/admin">Admin</a>
-        | <a ng-click="logout()" href="javascript:void(0);">Logout</a></div>
-      <div ng-hide="User.isAuthenticated()"><a href="#/register">Register</a> | <a href="#/login">Login</a></div>
+      <div ng-show="User.isAuthenticated()" class="btn-group">
+
+        <a class="btn" ui-if="!User.isAdmin()" href="javascript:void(0);"><i class="icon-edit"></i> Edit Campaign</a>
+        <a class="btn" ng-show="User.isAdmin()" href="#/admin"><i class="icon-lock"></i> Admin</a>
+        <a class="btn" ng-click="logout()" href="javascript:void(0);"><i class="icon-signout"></i> Logout</a>
+
+      </div>
+
+      <div ng-hide="User.isAuthenticated()" class="btn-group">
+        <a class="btn" href="#/register"><i class="icon-edit"></i> Register</a>
+        <a class="btn" href="#/login"><i class="icon-signin"></i> Login</a>
+      </div>
     </div>
 
-    <ul class="menu">
-      <li><a href="#/">Venture List</a></li>
-    </ul>
+    <div class="pull-left site-header">
+      <h2><a href="#/">Venture Challenge</a></h2>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
 
     <div ng-view></div>
 
