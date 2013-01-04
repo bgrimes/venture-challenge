@@ -130,6 +130,8 @@ function AdminCtrl($scope, $route, $routeParams, $location, $log, User, Admin)
  */
 function RegisterCtrl($scope, $http, $location, api_url) {
 
+  $scope.max_venture_images = 4;
+
   $scope.steps = [
     'Step 1: Team Info',
     'Step 2: Team Members',
@@ -156,6 +158,50 @@ function RegisterCtrl($scope, $http, $location, api_url) {
     ventureDescription: null,
     ventureImages: {"1":null,"2":null,"3":null,"4":null},
     ventureVideoLink: null
+  };
+
+  $scope.removeVentureImage = function(image_key) {
+
+    var ventureImages = $scope.registrationInfo.ventureImages;
+
+    // Check if image is not null/empty
+    if ( ventureImages[image_key] == null || ventureImages[image_key] == "")
+    {
+      return false;
+    }
+
+    // @todo Send call to delete image from server
+
+    // While image_key is less than max_venture_images
+    while( image_key < $scope.max_venture_images )
+    {
+      // Get the next image key
+      var next_image = image_key + 1;
+
+      // If next image is not null/empty
+      if ( ventureImages[next_image] == "undefined" || ventureImages[next_image] == null || ventureImages[next_image] == "" )
+      {
+
+        $("div.venture-image.image-" + image_key + " ul.qq-upload-list").empty();
+        ventureImages[image_key] = null;
+        // image_key = max_venture_images
+        image_key = $scope.max_venture_images;
+      }
+      else
+      {
+        // Copy next image to image_key
+        ventureImages[image_key] = ventureImages[next_image];
+
+        var list_current = $("div.venture-image.image-" + image_key + " ul.qq-upload-list");
+        var image_next   = $("div.venture-image.image-" + image_key);
+
+        list_current.empty();
+        $("div.venture-image.image-"+next_image+" ul.qq-upload-list li").appendTo(list_current);
+
+        image_key = image_key + 1;
+      }
+    }
+    return true;
   };
 
 

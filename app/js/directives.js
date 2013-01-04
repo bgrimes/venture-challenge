@@ -37,6 +37,7 @@ angular.module('ventureChallenge.directives').directive('ventureUploader', funct
     }
 
     scope[attrs.ngModel] = {};
+
     //This is to flush out the fid incase you upload a resume and hit cancel and come over to attachments and upload a new attachment.
     //scope.$parent.$root.resourceInfo.fId = [];
     var url        = params.url;
@@ -52,7 +53,7 @@ angular.module('ventureChallenge.directives').directive('ventureUploader', funct
       text: {
         uploadButton: '<i class="icon-upload icon-white"></i> ' + params.buttonText
       },
-      template: '<div class="qq-uploader span4">' +
+      template: '<div class="qq-uploader span5">' +
                   '<pre class="qq-upload-drop-area span4"><span>{dragZoneText}</span></pre>' +
                   '<div class="qq-upload-button btn btn-success" style="width:auto;">{uploadButtonText}</div>' +
                   '<ul class="qq-upload-list" style="margin-top: 10px; text-align:center;"></ul>' +

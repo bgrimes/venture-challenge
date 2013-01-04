@@ -32,6 +32,15 @@
 
 /* */
 
+div#page-content {
+  margin-top:-35px;
+}
+
+div.site-header {
+  z-index:99999;
+  position:relative;
+}
+
 div.site-header h2 {
   margin: 0;
 }
@@ -156,4 +165,12 @@ div.venture-image img {
 }
 div.venture-image > div:first-child {
   width: 150px;
+  height:150px;
+}
+
+div.venture-image div.remove-image {
+  position: relative;
+  left: 215px;
+  top: 30px;
+  z-index:99999;
 }
