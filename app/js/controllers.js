@@ -133,6 +133,7 @@ function RegisterCtrl($scope, $http, $location, api_url) {
   $scope.max_venture_images = 4;
 
   $scope.steps = [
+    'Details',
     'Step 1: Team Info',
     'Step 2: Team Members',
     'Step 3: Campaign Info',

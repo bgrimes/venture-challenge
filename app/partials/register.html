@@ -9,6 +9,36 @@
   </ul>
   <div ng-switch on="selection">
 
+    <div ng-switch-when="Details">
+      <div class="row">
+        <div class="span10">
+          UK Venture Challenge
+          Saturday, February 16, 2013
+          Davis Marksbury Building
+
+          Please see UK Venture Challenge Rules and Guidelines (will send link to web page) or
+          download the pdf (will send).
+
+          Each team is required to submit a written entry to iNET Director Deb Weis by January 28.
+          Instructions will be included in the registration confirmation email.
+
+          Teams will pitch before a panel of judges on Saturday, February 16 in the theater of the
+          Davis Marksbury Building, 329 Rose Street. Following the pitches, a first place ($2,000
+          prize) and second place ($1,000) winner will be announced along with the four teams which
+          will represent the University of Kentucky at the state competition, Idea State U, April 12 and
+          13.
+
+          Venture Info for Voting: This new feature of UK Venture Challenge will give you the
+          opportunity to show off your entrepreneurial spirit to the public! Upload a video (optional)
+          and description of your venture right away, and encourage everyone you know to vote for
+          your venture. Voters can cast one vote a day until voting concludes at midnight, February
+          15. The popular vote-winning venture will be announced at UK Venture Challenge.
+
+          For questions, contact: Deb Weis debweis@uky.edu, 859-257-8296, 256 ASTeCC Building.
+        </div>
+      </div>
+    </div>
+
     <!-- First Step -->
     <div ng-switch-when="Step 1: Team Info">
       <div class="row">
@@ -249,13 +279,13 @@
 
   <ul class="pager pull-left">
     <li class="" ng-class="{disabled: !hasPreviousStep()}">
-      <a href="javascript:void(0);" ng-click="decrementStep()">&larr; Previous Step</a>
+      <a ui-hide="!hasPreviousStep()" href="javascript:void(0);" ng-click="decrementStep()">&larr; Previous Step</a>
     </li>
     <li class="" ng-class="{disabled: !hasNextStep()}">
-      <a href="javascript:void(0);" ng-click="incrementStep()">Next Step &rarr;</a>
+      <a ui-hide="!hasNextStep()" href="javascript:void(0);" ng-click="incrementStep()">Next Step &rarr;</a>
     </li>
   </ul>
 
-  <div class="pull-right"><button style="margin:20px 0;" ng-disabled="formInvalid(registerForm)" ng-click="register()" class="btn btn-success">Confirm and Register</button></div>
+  <div class="pull-right"><button style="margin:20px 0;" ng-hide="formInvalid(registerForm)" ng-click="register()" class="btn btn-success">Confirm and Register</button></div>
   <div class="clearfix"></div>
 </form>
