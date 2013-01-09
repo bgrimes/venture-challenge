@@ -16,11 +16,10 @@ function logger($msg)
 }
 
 $allowedExtensions = array( 'jpeg', 'jpg', 'png' );
-$sizeLimit         = 1024 * 1024; // 1 MB
+//$sizeLimit         = 1024 * 1024; // 1 MB
 
 $uploader = new ventureFileUploader();
-$uploader->setAllowedExtensions( $allowedExtensions )
-    ->setSizeLimit( $sizeLimit );
+$uploader->setAllowedExtensions( $allowedExtensions );
 
 $upload_root = 'uploads';
 $currentDate = date( "Ymd" );
@@ -172,7 +171,7 @@ class ventureFileUploader
     {
         $this
             ->setAllowedExtensions( array() )
-            ->setSizeLimit( $this->toBytes( ini_get( 'upload_max_filesize' ) ) );
+            ->setSizeLimit( $this->toBytes( "1M" ) );
 
         $this->checkServerSettings();
 
