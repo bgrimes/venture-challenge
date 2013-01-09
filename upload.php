@@ -16,28 +16,30 @@ function logger($msg)
 }
 
 $allowedExtensions = array( 'jpeg', 'jpg', 'png' );
-//$sizeLimit         = 1024 * 1024; // 1 MB
+$sizeLimit         = 1024 * 1024; // 1 MB
 
 $uploader = new ventureFileUploader();
-$uploader->setAllowedExtensions($allowedExtensions);
+$uploader->setAllowedExtensions( $allowedExtensions )
+    ->setSizeLimit( $sizeLimit );
 
 $upload_root = 'uploads';
-$currentDate = date("Ymd");
+$currentDate = date( "Ymd" );
 
 // Ensure the main upload directory exists
-if ( !is_dir($upload_root . '/full/' . $currentDate) )
+if ( !is_dir( $upload_root . '/full/' . $currentDate ) )
 {
-    mkdir($upload_root . '/full/' . $currentDate, 0777, true);
+    mkdir( $upload_root . '/full/' . $currentDate, 0777, true );
 }
-elseif ( !is_writable($upload_root . '/full/' . $currentDate) )
+elseif ( !is_writable( $upload_root . '/full/' . $currentDate ) )
 {
-    echo htmlspecialchars(json_encode(array('success'=>false, 'message' => $upload_root . " is not writable."), ENT_QUOTES));
+    echo htmlspecialchars( json_encode( array( 'success' => false, 'message' => $upload_root . " is not writable." ), ENT_QUOTES ) );
+
     return;
 }
 
 // Handleupload will receive the image, save it as a fullsize, mediumsize and thumbnail size image
 // in the uploads directory with the given current date.
-$result             = $uploader->handleUpload( $upload_root, $currentDate );
+$result = $uploader->handleUpload( $upload_root, $currentDate );
 //$result['filepath'] = $currentDate . '/' . $_GET['qqfile'];
 
 echo htmlspecialchars( json_encode( $result ), ENT_NOQUOTES );
@@ -169,9 +171,8 @@ class ventureFileUploader
     public function __construct()
     {
         $this
-            ->setAllowedExtensions(array())
-            ->setSizeLimit($this->toBytes( ini_get( 'upload_max_filesize' ) ))
-        ;
+            ->setAllowedExtensions( array() )
+            ->setSizeLimit( $this->toBytes( ini_get( 'upload_max_filesize' ) ) );
 
         $this->checkServerSettings();
 
@@ -179,7 +180,8 @@ class ventureFileUploader
         {
             $this->file = false;
         }
-        else {
+        else
+        {
             if ( strpos( strtolower( $_SERVER['CONTENT_TYPE'] ), 'multipart/' ) === 0 )
             {
                 $this->file = new qqUploadedFileForm();
@@ -199,7 +201,7 @@ class ventureFileUploader
      *
      * @param string $uploadDirectory
      * @param string $intermittentDir A director to prepend the filename
-     * @param string $replaceOldFile=true
+     * @param string $replaceOldFile  =true
      *
      * @returns array('success'=>true) or array('error'=>'error message')
      */
@@ -254,22 +256,22 @@ class ventureFileUploader
         {
             $mediumBasePath    = $uploadDirectory . '/medium/' . $intermittentDir . '/';
             $thumbnailBasePath = $uploadDirectory . '/thumbnail/' . $intermittentDir . '/';
-            $createFolders = true;
-            $backgroundColor = null;
-            $imageQuality = 95;
+            $createFolders     = true;
+            $backgroundColor   = null;
+            $imageQuality      = 95;
 
             // Attempt to save medium and thumbnails
-            $baseLayer = ImageWorkshop::initFromPath($uploadDirectory . '/full/' . $intermittentDir . '/' . $this->uploadName);
-            $baseLayer->cropMaximumInPixel(0, 0, "MM");
-            $baseLayer->resizeInPixel(300, 170);
-            $baseLayer->save($mediumBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality);
+            $baseLayer = ImageWorkshop::initFromPath( $uploadDirectory . '/full/' . $intermittentDir . '/' . $this->uploadName );
+            $baseLayer->cropMaximumInPixel( 0, 0, "MM" );
+            $baseLayer->resizeInPixel( 300, 170 );
+            $baseLayer->save( $mediumBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality );
 
             // convert to smaller width
-            $baseLayer->resizeInPixel(170, 170);
-            $baseLayer->save($thumbnailBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality);
+            $baseLayer->resizeInPixel( 170, 170 );
+            $baseLayer->save( $thumbnailBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality );
 
 
-            return array( 'success' => true, 'filepath' =>  $intermittentDir . '/' . $this->uploadName );
+            return array( 'success' => true, 'filepath' => $intermittentDir . '/' . $this->uploadName );
         }
         else
         {
@@ -301,6 +303,7 @@ class ventureFileUploader
         {
             return $this->file->getName();
         }
+
         return "";
     }
 
@@ -312,6 +315,7 @@ class ventureFileUploader
     public function setSizeLimit($sizeLimit)
     {
         $this->sizeLimit = $sizeLimit;
+
         return $this;
     }
 
@@ -325,6 +329,7 @@ class ventureFileUploader
         $allowedExtensions = array_map( "strtolower", $allowedExtensions );
 
         $this->allowedExtensions = $allowedExtensions;
+
         return $this;
     }
 
