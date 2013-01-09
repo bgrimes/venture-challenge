@@ -174,3 +174,7 @@ div.venture-image div.remove-image {
   top: 30px;
   z-index:99999;
 }
+
+div.well p {
+  margin: 10px 0;
+}

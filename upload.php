@@ -1,5 +1,9 @@
 <?php
 
+require_once 'api/vendor/autoload.php';
+
+use PHPImageWorkshop\ImageWorkshop;
+
 // get: action, qqFile (filename)
 //logger( json_encode( $_GET ) );
 //logger(json_encode($_POST));
@@ -12,24 +16,29 @@ function logger($msg)
 }
 
 $allowedExtensions = array( 'jpeg', 'jpg', 'png' );
-$sizeLimit         = 1024 * 1024; // 1 MB
+//$sizeLimit         = 1024 * 1024; // 1 MB
 
-$uploader = new qqFileUploader( $allowedExtensions, $sizeLimit );
+$uploader = new ventureFileUploader();
+$uploader->setAllowedExtensions($allowedExtensions);
 
-$upload_root = 'uploads/'.date("Ymd");
+$upload_root = 'uploads';
+$currentDate = date("Ymd");
 
-if ( !is_dir($upload_root) )
+// Ensure the main upload directory exists
+if ( !is_dir($upload_root . '/full/' . $currentDate) )
 {
-    mkdir($upload_root, 0777, true);
+    mkdir($upload_root . '/full/' . $currentDate, 0777, true);
 }
-elseif ( !is_writable($upload_root) )
+elseif ( !is_writable($upload_root . '/full/' . $currentDate) )
 {
     echo htmlspecialchars(json_encode(array('success'=>false, 'message' => $upload_root . " is not writable."), ENT_QUOTES));
     return;
 }
 
-$result             = $uploader->handleUpload( $upload_root );
-$result['filepath'] = $upload_root . '/' . $_GET['qqfile'];
+// Handleupload will receive the image, save it as a fullsize, mediumsize and thumbnail size image
+// in the uploads directory with the given current date.
+$result             = $uploader->handleUpload( $upload_root, $currentDate );
+//$result['filepath'] = $currentDate . '/' . $_GET['qqfile'];
 
 echo htmlspecialchars( json_encode( $result ), ENT_NOQUOTES );
 
@@ -143,35 +152,26 @@ class qqUploadedFileForm
     }
 }
 
-/**
- * Class that encapsulates the file-upload internals
- */
-class qqFileUploader
+class ventureFileUploader
 {
+    /** @var array $allowedExtensions */
     private $allowedExtensions;
+
+    /** @var int $sizeLimit */
     private $sizeLimit;
+
+    /** @var mixed|qqUploadedFileForm|qqUploadedFileXhr $file */
     private $file;
+
+    /** @var string $uploadName */
     private $uploadName;
 
-    /**
-     * @param array $allowedExtensions; defaults to an empty array
-     * @param int   $sizeLimit        ; defaults to the server's upload_max_filesize setting
-     */
-    function __construct(array $allowedExtensions = null, $sizeLimit = null)
+    public function __construct()
     {
-        if ( $allowedExtensions === null )
-        {
-            $allowedExtensions = array();
-        }
-        if ( $sizeLimit === null )
-        {
-            $sizeLimit = $this->toBytes( ini_get( 'upload_max_filesize' ) );
-        }
-
-        $allowedExtensions = array_map( "strtolower", $allowedExtensions );
-
-        $this->allowedExtensions = $allowedExtensions;
-        $this->sizeLimit         = $sizeLimit;
+        $this
+            ->setAllowedExtensions(array())
+            ->setSizeLimit($this->toBytes( ini_get( 'upload_max_filesize' ) ))
+        ;
 
         $this->checkServerSettings();
 
@@ -189,7 +189,98 @@ class qqFileUploader
                 $this->file = new qqUploadedFileXhr();
             }
         }
+
+        $this->uploadName = time();
     }
+
+
+    /**
+     * Handle the uploaded file
+     *
+     * @param string $uploadDirectory
+     * @param string $intermittentDir A director to prepend the filename
+     * @param string $replaceOldFile=true
+     *
+     * @returns array('success'=>true) or array('error'=>'error message')
+     */
+    function handleUpload($uploadDirectory, $intermittentDir = "", $replaceOldFile = false)
+    {
+        if ( !is_writable( $uploadDirectory ) )
+        {
+            return array( 'error' => "Server error. Upload directory isn't writable." );
+        }
+
+        if ( !$this->file )
+        {
+            return array( 'error' => 'No files were uploaded.' );
+        }
+
+        $size = $this->file->getSize();
+
+        if ( $size == 0 )
+        {
+            return array( 'error' => 'File is empty' );
+        }
+
+        if ( $size > $this->sizeLimit )
+        {
+            return array( 'error' => 'File is too large' );
+        }
+
+        $pathinfo = pathinfo( $this->file->getName() );
+        $filename = $pathinfo['filename'];
+        $ext      = $pathinfo['extension'];
+
+        if ( $this->allowedExtensions and !in_array( strtolower( $ext ), $this->allowedExtensions ) )
+        {
+            $these = implode( ', ', $this->allowedExtensions );
+
+            return array( 'error' => 'File has an invalid extension, it should be one of ' . $these . '.' );
+        }
+
+
+        if ( !$replaceOldFile )
+        {
+            /// don't overwrite previous files that were uploaded
+            while (file_exists( $uploadDirectory . '/full/' . $intermittentDir . '/' . $filename . "." . $ext ))
+            {
+                $filename .= rand( 10, 99 );
+            }
+        }
+
+        $this->uploadName = $filename . "." . $ext;
+
+        if ( $this->file->save( $uploadDirectory . '/full/' . $intermittentDir . '/' . $this->uploadName ) )
+        {
+            $mediumBasePath    = $uploadDirectory . '/medium/' . $intermittentDir . '/';
+            $thumbnailBasePath = $uploadDirectory . '/thumbnail/' . $intermittentDir . '/';
+            $createFolders = true;
+            $backgroundColor = null;
+            $imageQuality = 95;
+
+            // Attempt to save medium and thumbnails
+            $baseLayer = ImageWorkshop::initFromPath($uploadDirectory . '/full/' . $intermittentDir . '/' . $this->uploadName);
+            $baseLayer->cropMaximumInPixel(0, 0, "MM");
+            $baseLayer->resizeInPixel(300, 170);
+            $baseLayer->save($mediumBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality);
+
+            // convert to smaller width
+            $baseLayer->resizeInPixel(170, 170);
+            $baseLayer->save($thumbnailBasePath, $this->uploadName, $createFolders, $backgroundColor, $imageQuality);
+
+
+            return array( 'success' => true, 'filepath' =>  $intermittentDir . '/' . $this->uploadName );
+        }
+        else
+        {
+            return array(
+                'error' => 'Could not save uploaded file.' .
+                    'The upload was cancelled, or server error encountered'
+            );
+        }
+
+    }
+
 
     /**
      * Get the name of the uploaded file
@@ -197,10 +288,7 @@ class qqFileUploader
      */
     public function getUploadName()
     {
-        if ( isset( $this->uploadName ) )
-        {
-            return $this->uploadName;
-        }
+        return $this->uploadName;
     }
 
     /**
@@ -213,7 +301,33 @@ class qqFileUploader
         {
             return $this->file->getName();
         }
+        return "";
     }
+
+    /**
+     * @param $sizeLimit
+     *
+     * @return ventureFileUploader
+     */
+    public function setSizeLimit($sizeLimit)
+    {
+        $this->sizeLimit = $sizeLimit;
+        return $this;
+    }
+
+    /**
+     * @param array $allowedExtensions
+     *
+     * @return ventureFileUploader
+     */
+    public function setAllowedExtensions(array $allowedExtensions)
+    {
+        $allowedExtensions = array_map( "strtolower", $allowedExtensions );
+
+        $this->allowedExtensions = $allowedExtensions;
+        return $this;
+    }
+
 
     /**
      * Internal function that checks if server's may sizes match the
@@ -251,76 +365,5 @@ class qqFileUploader
         }
 
         return $val;
-    }
-
-    /**
-     * Handle the uploaded file
-     *
-     * @param string $uploadDirectory
-     * @param string $replaceOldFile=true
-     *
-     * @returns array('success'=>true) or array('error'=>'error message')
-     */
-    function handleUpload($uploadDirectory, $replaceOldFile = false)
-    {
-        if ( !is_writable( $uploadDirectory ) )
-        {
-            return array( 'error' => "Server error. Upload directory isn't writable." );
-        }
-
-        if ( !$this->file )
-        {
-            return array( 'error' => 'No files were uploaded.' );
-        }
-
-        $size = $this->file->getSize();
-
-        if ( $size == 0 )
-        {
-            return array( 'error' => 'File is empty' );
-        }
-
-        if ( $size > $this->sizeLimit )
-        {
-            return array( 'error' => 'File is too large' );
-        }
-
-        $pathinfo = pathinfo( $this->file->getName() );
-        $filename = $pathinfo['filename'];
-        //$filename = md5(uniqid());
-        $ext = @$pathinfo['extension']; // hide notices if extension is empty
-
-        if ( $this->allowedExtensions && !in_array( strtolower( $ext ), $this->allowedExtensions ) )
-        {
-            $these = implode( ', ', $this->allowedExtensions );
-
-            return array( 'error' => 'File has an invalid extension, it should be one of ' . $these . '.' );
-        }
-
-        $ext = ( $ext == '' ) ? $ext : '.' . $ext;
-
-        if ( !$replaceOldFile )
-        {
-            /// don't overwrite previous files that were uploaded
-            while (file_exists( $uploadDirectory . DIRECTORY_SEPARATOR . $filename . $ext ))
-            {
-                $filename .= rand( 10, 99 );
-            }
-        }
-
-        $this->uploadName = $filename . $ext;
-
-        if ( $this->file->save( $uploadDirectory . DIRECTORY_SEPARATOR . $filename . $ext ) )
-        {
-            return array( 'success' => true );
-        }
-        else
-        {
-            return array(
-                'error' => 'Could not save uploaded file.' .
-                    'The upload was cancelled, or server error encountered'
-            );
-        }
-
     }
 }

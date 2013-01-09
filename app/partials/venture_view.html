@@ -1,10 +1,12 @@
-<div class="row" xmlns="http://www.w3.org/1999/html">
+<div class="row" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
   <!-- Side Bar (Venture Team Info -->
   <div class="pull-right span3">
 
-    <img ui-hide="activeVenture.ventureInfo.teamPicture == null" ng-src="{{root_url}}/{{activeVenture.ventureInfo.teamPicture}}"/>
-    <h4>{{activeVenture.ventureInfo.teamName}}</h4>
+    <a href="{{root_url}}/uploads/full/{{activeVenture.ventureInfo.teamPicture}}" ui-hide="activeVenture.ventureInfo.teamPicture == null" ui-jq="lightbox">
+      <img ng-src="{{root_url}}/uploads/thumbnail/{{activeVenture.ventureInfo.teamPicture}}"/>
+    </a>
+    <h4><i class="icon-lightbulb"></i> {{activeVenture.ventureInfo.teamName}}</h4>
     <ul>
       <li ng-repeat="teamMate in activeVenture.ventureInfo.teamMembers">{{teamMate.fullname}}</li>
     </ul>
@@ -15,7 +17,7 @@
 
   <!-- Venture Title and Vote -->
   <div class="span9">
-    <div class="pull-left">
+    <div class="pull-left" style="max-width:550px;">
       <h2>{{activeVenture.ventureInfo.ventureName}}</h2>
     </div>
     <div class="pull-right">
@@ -35,23 +37,19 @@
 
   <!-- Venture Description -->
   <div class="span9" style="margin-top:20px;">
-    <p>{{activeVenture.ventureInfo.ventureDescription}}</p>
+    <h3><i class="icon-angle-right"></i> Description</h3>
+    <div class="well">
+      <p>{{activeVenture.ventureInfo.ventureDescription}}</p>
+    </div>
   </div>
 
-  <!-- Carousel -->
+  <!-- Images -->
   <div ui-hide="activeVenture.ventureInfo.ventureImages.1 == null" class="span9">
-    <div id="ventureCarousel" ui-jq="carousel" class="carousel slide">
-      <!-- Carousel items -->
-      <div class="carousel-inner">
-        <div ng-repeat="ventureImage in activeVenture.ventureImages" class="item">
 
-          <img ng-src="{{root_url}}/{{ventureImage}}"/>
-        </div>
-      </div>
+    <a href="{{root_url}}/uploads/full/{{ventureImage}}" ng-repeat="ventureImage in activeVenture.ventureImages" ui-jq="lightbox" rel="ventureImages">
+      <img ng-src="{{root_url}}/uploads/thumbnail/{{ventureImage}}"/>
+    </a>
 
-      <!-- Carousel nav -->
-      <a class="carousel-control left" href="#ventureCarousel" data-slide="prev">&lsaquo;</a>
-      <a class="carousel-control right" href="#ventureCarousel" data-slide="next">&rsaquo;</a>
     </div>
 
   </div>

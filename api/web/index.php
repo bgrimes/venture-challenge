@@ -84,13 +84,10 @@ $app->before( function (Request $request)
 $app->get($appDirectory . '/', function(Request $request) use ($app, $em) {
 
 
-    $repo    = $em->getRepository( 'Venture' );
-    $admins = $repo->findBy(array('roles'=>'admin'));
-    var_dump($admins);die;
 
     $message = $app['mailer']
             ->createMessage()
-            ->setFrom("transcriptdb@gmail.com")
+            ->setFrom("debweis@uky.edu")
             ->setTo(array("bgrimes@gmail.com"))
             ->setSubject("Welcome")
             ->setBody("<h1>Hery</h1>", "text/html")

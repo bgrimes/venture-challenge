@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 // PUT - /register
 //      Register the user
-$app->put( $appDirectory . '/register', function (Request $request) use ($app, $em)
+$app->put( $appDirectory . '/register', function (Request $request) use ($app, $em, $config)
 {
     $app['monolog']->addDebug( 'Register called', array( $request->get( 'venture' ) ) );
 
@@ -52,6 +52,29 @@ $app->put( $appDirectory . '/register', function (Request $request) use ($app, $
 
     $app['mailer']->send($message);
     /* */
+
+    $adminUsers = $config['admin_users'];
+    $sendTo     = array();
+    foreach ($adminUsers as $adminUser)
+    {
+        $sendTo [] = $adminUser['email'];
+    }
+
+    $app['monolog']->addInfo("Sending registration info for team: {$ventureInfo['teamEmail']}", array($sendTo));
+
+    if ( !empty($sendTo) )
+    {
+        $message = $app['mailer']
+            ->createMessage()
+            ->setFrom( "transcriptdb@gmail.com" )
+            ->setTo( $sendTo )
+            ->setSubject( "Venture Challenge User Registration" )
+            ->setBody( "<h1>A new team has registered!</h1>" .
+                "<p><b>Team contact email:</b> {$ventureInfo['teamEmail']}</p>" .
+                "<br><br><br><p>Please <a href='https://ci.uky.edu/inet/page/inet-venture-challenge-program#/login'>login</a> and review their submission</p>"
+            , "text/html" );
+        $app['mailer']->send( $message, $fails );
+    }
 
     return $app->json( array( 'success' => true ) );
 } );

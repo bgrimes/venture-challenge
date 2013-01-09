@@ -13,12 +13,14 @@
   -->
   <div ng-repeat="venture in ventures | orderBy:predicate:reverse" class="row">
     <div class="span4">
-      <iframe src="{{venture.videoEmbedLink}}" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
+      <iframe ui-hide="venture.videoEmbedLink == false" src="{{venture.videoEmbedLink}}" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+      <a href="{{root_url}}/full/{{venture.ventureInfo.ventureImages.1}}" ui-if="venture.videoEmbedLink == false && venture.ventureInfo.ventureImages.1 != null" ui-jq="lightbox">
+        <img ng-src="{{root_url}}/medium/{{venture.ventureInfo.ventureImages.1}}" />
+      </a>
     </div>
     <div class="span6">
       <h4><a href="#/venture/{{venture.id}}">{{venture.ventureInfo.ventureName}}</a></h4>
-      <p>{{venture.ventureInfo.ventureDescription}}</p>
+      <p>{{venture.ventureInfo.ventureDescription | cut:true:300:' ...' }}</p>
       <p class="text-info"><a href="#/venture/{{venture.id}}"><i class="icon-chevron-right"></i> Click to View Venture</a></p>
     </div>
     <div class="pull-right">

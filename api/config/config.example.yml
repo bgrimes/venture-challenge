@@ -20,3 +20,8 @@ swiftmailer:
     password:   'examplepass'
     encryption: 'ssl'
     auth_mode:  'login'
+
+# Define the list of administrative users
+admin_users:
+  steve_holt:
+    email: steve.holt@example.com

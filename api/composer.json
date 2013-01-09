@@ -7,7 +7,8 @@
         "swiftmailer/swiftmailer": "v4.2.2",
         "symfony/yaml": "v2.1.3",
         "gedmo/doctrine-extensions": "2.3.*@dev",
-        "chh/cache-service-provider": "*@dev"
+        "chh/cache-service-provider": "*@dev",
+        "sybio/image-workshop": "dev-master"
     },
     "minimum-stability": "dev"
     

@@ -1,139 +1,18 @@
-'use strict';
-
-/* Controllers */
-
-function MainCtrl($scope, $route, $routeParams, $location, User, base_url, root_url) {
-  $scope.root_url     = root_url;
-  $scope.base_url     = base_url;
-  $scope.$route       = $route;
-  $scope.$location    = $location;
-  $scope.$routeParams = $routeParams;
-
-  $scope.User = User;
-
-
-  // User Logout function
-  $scope.logout = function () {
-    User.logout(function (result) {
-      if (!result) {
-        return window.alert("There was a problem logging you out, sorry!");
-      } else {
-        $scope.safeApply(function () {
-          return $location.path('/');
-        });
-      }
-    });
-  };
-
-  // https://coderwall.com/p/ngisma
-  $scope.safeApply = function (fn) {
-    var phase = this.$root.$$phase;
-    if (phase == '$apply' || phase == '$digest') {
-      if (fn && (typeof(fn) === 'function')) {
-        fn();
-      }
-    } else {
-      this.$apply(fn);
-    }
-  };
-
-}
-
-function AdminCtrl($scope, $route, $routeParams, $location, $log, User, Admin)
-{
-
-  // Used to order the venture list in the view
-  $scope.predicate = "enabled";
-
-  /**
-   * Approve a venture with a given id
-   *
-   * @param ventureId
-   */
-  $scope.approve = function(ventureId, $event) {
-
-    // Disable the button
-    $($event.currentTarget).addClass('disabled');
-
-    $log.info([$event, $event.currentTarget]);
-
-    var venture = Admin.getVenture(ventureId);
-    // Attempt to find the venture by id from the admin ventures
-    if ( typeof venture == "undefined" )
-    {
-      alert("There was an error processing your request (venture ID " + ventureId + " cannot be found).");
-    }
-
-    var promise = Admin.approveVenture(ventureId);
-    promise.then(function(){
-      venture.enabled = true;
-
-      // Remove the button
-      $($event.currentTarget).remove();
-    }, function(){
-      // Disable the button
-      $($event.currentTarget).removeClass('disabled');
-      alert("There was an error processing your request, please try again soon");
-    });
-  };
-
-
-  // Redirect the user to the front page if they are not admin
-  $scope.$on('$routeChangeSuccess', function(current, previous) {
-    if ( !User.isAuthenticated() || !User.isAdmin() )
-    {
-      $scope.safeApply(function(){
-        return $location.path('/');
-      });
-    }
-
-    // If the ventures haven't been loaded
-    if ( Admin.self.ventures.length == 0 )
-    {
-      // Set up the promise object
-      var venture_promise = Admin.getVentures();
-
-      // When the promise becomes fulfilled:
-      venture_promise.then(function(){
-        // Set the local ventures to the passed
-        $scope.ventures      = Admin.self.ventures;
-        // Set the local ventures to the passed
-        $scope.ventures      = Admin.self.ventures;
-        $scope.activeVenture = Admin.getVenture($routeParams.ventureId);
-      }, function(){
-        // There was an error (the promise was rejected)
-      });
-      return;
-    }
-    else
-    {
-      $scope.ventures = Admin.self.ventures;
-    }
-
-    // Will set the active venture attribute if the id is set
-    $scope.activeVenture = Admin.getVenture($routeParams.ventureId);
-
-    //$log.info(['admin routechange', $scope.ventures]);
-  });
-
-
-}
 
 
 /**
- * Registration controller
+ * Venture edit controller
  *
  * @param $scope
  * @param $http
  * @param $location
  * @constructor
  */
-function RegisterCtrl($scope, $http, $location, api_url) {
+function VentureEditCtrl($scope, $http, $location, User, api_url) {
 
   $scope.max_venture_images = 4;
 
   $scope.steps = [
-    'Details',
     'Step 1: Team Info',
     'Step 2: Team Members',
     'Step 3: Campaign Info',
@@ -346,7 +225,6 @@ function RegisterCtrl($scope, $http, $location, api_url) {
     $http.put(api_url + '/register', {venture: $scope.registrationInfo}).
       success(function(data, status, headers, config) {
         $scope.safeApply(function () {
-          alert("Your application has been submitted for review.");
           return $location.path('/login');
         });
       }).
@@ -359,40 +237,24 @@ function RegisterCtrl($scope, $http, $location, api_url) {
       });
   };
 
-  // https://coderwall.com/p/ngisma
-  $scope.safeApply = function (fn) {
-    var phase = this.$root.$$phase;
-    if (phase == '$apply' || phase == '$digest') {
-      if (fn && (typeof(fn) === 'function')) {
-        fn();
-      }
-    } else {
-      this.$apply(fn);
-    }
-  };
-}
 
-
-/**
- * Login Controller
- *
- * @param $scope
- * @param $location
- * @param User
- * @constructor
- */
-function LoginCtrl($scope, $location, User) {
-  // Define the login function, called from the login form
-  $scope.login = function () {
-
-    var promise = User.login($scope.email, $scope.pass);
-    promise.then(function(){
-      // Return the user to the root path
-      return $scope.safeApply(function () {
+  // Redirect the user to the front page if they are not admin
+  $scope.$on('$routeChangeSuccess', function(current, previous) {
+    if ( !User.isAuthenticated() )
+    {
+      $scope.safeApply(function(){
         return $location.path('/');
       });
-    }, function(reason){
-      window.alert("Login failed: " + reason);
-    });
-  };
+    }
+
+    // If the venture info is already loaded, go ahead and return out of this function
+    if ( $scope.registrationInfo.teamName != null )
+    {
+      return;
+    }
+
+    // Load the venture info
+    var teamEmail = User.getEmail();
+
+  });
 }

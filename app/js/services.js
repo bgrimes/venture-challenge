@@ -148,7 +148,7 @@ angular.module('ventureChallenge.services', []).
             self.votes         = data.user.votes;
             self.isAdmin       = (data.user.role == 'admin');
             self.authenticated = true;
-            console.log(self);
+            console.log([data,self]);
             deferred.resolve();
           }).
           error(function(data, status, headers, config) {
