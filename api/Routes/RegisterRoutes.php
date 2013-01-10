@@ -39,7 +39,7 @@ $app->put( $appDirectory . '/register', function (Request $request) use ($app, $
 
     unset($ventureInfo['teamPassword']);
     unset($ventureInfo['confirmPassword']);
-    
+
     $venture->setVentureInfo( $ventureInfo );
 
     $em->persist( $venture );

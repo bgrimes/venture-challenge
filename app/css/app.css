@@ -178,3 +178,8 @@ div.venture-image div.remove-image {
 div.well p {
   margin: 10px 0;
 }
+
+
+a.edit-link {
+  display: none;
+}
