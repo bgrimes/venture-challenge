@@ -72,6 +72,21 @@
       </div>
       <!-- -->
       <div class="control-group">
+        <label class="control-label">Category</label>
+
+        <div class="controls">
+          <select ui-select2 ng-model="registrationInfo.ventureType" data-placeholder="Select one:" style="width:220px;"
+                  required>
+            <option></option>
+            <option value="Undergraduate concept">Undergraduate concept</option>
+            <option value="Undergraduate plan">Undergraduate plan</option>
+            <option value="Graduate concept">Graduate concept</option>
+            <option value="Graduate plan">Graduate plan</option>
+          </select>
+        </div>
+      </div>
+      <!-- -->
+      <div class="control-group">
         <label class="control-label" for="teamPhone">Contact Phone</label>
 
         <div class="controls">
@@ -241,21 +256,7 @@
              ng-model="registrationInfo.ventureName" required>
     </div>
   </div>
-  <!-- -->
-  <div class="control-group">
-    <label class="control-label">Category</label>
 
-    <div class="controls">
-      <select ui-select2 ng-model="registrationInfo.ventureType" data-placeholder="Select one:" style="width:220px;"
-              required>
-        <option></option>
-        <option value="Undergraduate concept">Undergraduate concept</option>
-        <option value="Undergraduate plan">Undergraduate plan</option>
-        <option value="Graduate concept">Graduate concept</option>
-        <option value="Graduate plan">Graduate plan</option>
-      </select>
-    </div>
-  </div>
   <!-- -->
   <div class="control-group">
     <label class="control-label" for="ventureDescription">Description of Venture <i>(100-150 words)</i></label>
