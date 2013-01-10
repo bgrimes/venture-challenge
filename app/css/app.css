@@ -181,5 +181,5 @@ div.well p {
 
 
 a.edit-link {
-  display: none;
+  display: none !important;
 }
