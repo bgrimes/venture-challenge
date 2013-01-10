@@ -36,6 +36,10 @@ $app->put( $appDirectory . '/register', function (Request $request) use ($app, $
     $venture->setEmail( $ventureInfo['teamEmail'] );
     $venture->setPassword( $ventureInfo['teamPassword'] );
     $venture->setRoles( array( 'team' ) );
+
+    unset($ventureInfo['teamPassword']);
+    unset($ventureInfo['confirmPassword']);
+    
     $venture->setVentureInfo( $ventureInfo );
 
     $em->persist( $venture );

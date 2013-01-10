@@ -345,8 +345,8 @@ function RegisterCtrl($scope, $http, $location, api_url) {
 
     $http.put(api_url + '/register', {venture: $scope.registrationInfo}).
       success(function(data, status, headers, config) {
+        alert("Your application has been submitted for review.");
         $scope.safeApply(function () {
-          alert("Your application has been submitted for review.");
           return $location.path('/login');
         });
       }).
