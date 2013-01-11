@@ -80,6 +80,22 @@ $app->match( $appDirectory . '/register', function (Request $request) use ($app,
         $app['mailer']->send( $message, $fails );
     }
 
+    // Send a message to the registrant
+    $message = $app['mailer']
+        ->createMessage()
+        ->setFrom('transcriptdb@gmail.com')
+        ->setTo(array($ventureInfo['teamEmail']))
+        ->setSubject("UK Venture Challenge Registration")
+        ->setBody("<p>You are now registered for UK Venture Challenge, February 16, Davis Marksbury Theater, 329 Rose Street.</p>
+
+        <p>Written entries are due <b>January 28</b>. Please send your written entries to Deb Weis,
+        debweis@uky.edu.</p>
+
+        <p>See <a href='https://ci.uky.edu/inet/page/uk-venture-challenge-rules-guidelines'>UK Venture Challenge Rules and Guidelines</a>
+        (https://ci.uky.edu/inet/page/uk-venture-challenge-rules-guidelines) for more information.</p>
+        ", 'text/html');
+    $app['mailer']->send($message, $fails);
+
     return $app->json( array( 'success' => true ) );
 } )
 ->method("OPTIONS|PUT|POST");

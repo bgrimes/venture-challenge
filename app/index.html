@@ -32,7 +32,7 @@
     <div class="pull-right">
       <div ng-show="User.isAuthenticated()" class="btn-group">
 
-        <a class="btn" ui-if="!User.isAdmin()" href="javascript:void(0);"><i class="icon-edit"></i> Edit Campaign</a>
+        <a class="btn" ui-if="!User.isAdmin()" href="#/venture/edit"><i class="icon-edit"></i> Edit Campaign</a>
         <a class="btn" ng-show="User.isAdmin()" href="#/admin"><i class="icon-lock"></i> Admin</a>
         <a class="btn" ng-click="logout()" href="javascript:void(0);"><i class="icon-signout"></i> Logout</a>
 
