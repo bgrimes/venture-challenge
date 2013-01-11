@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 // GET - /register
 //      Register the user
-$app->get( $appDirectory . '/venture', function (Request $request) use ($app, $em)
+$app->match( $appDirectory . '/venture', function (Request $request) use ($app, $em)
 {
 
     // Decode the json encoded venture info as an array
@@ -62,9 +62,10 @@ $app->get( $appDirectory . '/venture', function (Request $request) use ($app, $e
 
     $app['mailer']->send($message);
     /* */
-} );
+} )
+->method("GET|OPTIONS");
 
-$app->post($appDirectory . '/venture/upvote', function(Request $request) use ($app, $em) {
+$app->match($appDirectory . '/venture/upvote', function(Request $request) use ($app, $em) {
     // Get the venture ID from the request
     $id = $request->get("id");
 
@@ -118,5 +119,6 @@ $app->post($appDirectory . '/venture/upvote', function(Request $request) use ($a
     return $app->json(array("votes" => $venture->getVotes()));
 
 
-});
+})
+->method("POST|OPTIONS");
 

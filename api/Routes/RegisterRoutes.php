@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 // PUT - /register
 //      Register the user
-$app->put( $appDirectory . '/register', function (Request $request) use ($app, $em, $config)
+$app->match( $appDirectory . '/register', function (Request $request) use ($app, $em, $config)
 {
     $app['monolog']->addDebug( 'Register called', array( $request->get( 'venture' ) ) );
 
@@ -81,5 +81,6 @@ $app->put( $appDirectory . '/register', function (Request $request) use ($app, $
     }
 
     return $app->json( array( 'success' => true ) );
-} );
+} )
+->method("OPTIONS|PUT|POST");
 
