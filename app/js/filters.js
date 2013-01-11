@@ -19,7 +19,6 @@ angular.module('ventureChallenge.filters', []).
    */
   filter('cut', function () {
     return function (value, wordwise, max, tail) {
-      console.log([value, wordwise, max, tail]);
       if (!value) return '';
 
       max = parseInt(max, 10);
