@@ -183,3 +183,32 @@ div.well p {
 a.edit-link {
   display: none !important;
 }
+
+
+div.intro-text .block {
+  text-align: center;
+  height:150px;
+}
+
+div.intro-text .block:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+
+  /* For visualization
+  background: #808080; width: 5px;
+  */
+}
+
+div.intro-text .centered {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+div.intro-text div.alert.alert-info {
+  height:150px;
+  display:table-cell;
+  vertical-align:middle;
+  text-align:center;
+}

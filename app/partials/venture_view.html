@@ -8,7 +8,9 @@
     </a>
     <h4><i class="icon-lightbulb"></i> {{activeVenture.ventureInfo.teamName}}</h4>
     <ul>
-      <li ng-repeat="teamMate in activeVenture.ventureInfo.teamMembers">{{teamMate.fullname}}</li>
+      <li ng-repeat="teamMate in activeVenture.ventureInfo.teamMembers">
+        {{teamMate.fullname}} ({{teamMate.major}})
+      </li>
     </ul>
 
     <a class="btn btn-success" href="http://www.uky.edu/GiveNow/welcome.htm?
