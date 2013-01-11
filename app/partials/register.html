@@ -17,7 +17,7 @@
         <address>
           <strong>UK Venture Challenge</strong><br>
           Saturday, February 16, 2013<br>
-          Davis Marksbury Building<br>
+          Davis Marksbury Building Theater<br>
         </address>
       </blockquote>
       <p>
@@ -179,6 +179,7 @@
 
               <label>Full Name*</label><input type="text" placeholder="Full Name" ng-model="teamMember.fullname">
               <label>Email*</label><input type="email" placeholder="Email address" ng-model="teamMember.email">
+              <!--
               <label>
                 Non-Student
                 <a href="javascript:void(0)" ui-jq="popover" data-content="Register this team member as a non-student. At least one team member must be a student." data-original-title="Non-student" style="color:#333;text-decoration: none;">
@@ -186,6 +187,7 @@
                 </a>
               </label>
               <input type="checkbox" ng-model="teamMember.nonStudent"/>
+              -->
               <!-- Hide if non-student -->
               <div ui-hide="teamMember.nonStudent">
                 <label>Major*</label><input type="text" placeholder="Major" ng-model="teamMember.major">
@@ -218,10 +220,12 @@
                 <dd>{{teamMember.fullname}}&nbsp;</dd>
                 <dt>Email</dt>
                 <dd>{{teamMember.email}}&nbsp;</dd>
+                <!--
                 <div ui-hide="!teamMember.nonStudent">
                   <dt>Non-student</dt>
                   <dd><i class="icon-ok"></i></dd>
                 </div>
+                -->
                 <div ui-hide="teamMember.nonStudent">
                   <dt>Major</dt>
                   <dd>{{teamMember.major}}&nbsp;</dd>
@@ -248,7 +252,7 @@
 
   <!-- -->
   <div class="control-group">
-    <label class="control-label" for="ventureName">Venture Name</label>
+    <label class="control-label" for="ventureName">Team Name</label>
 
     <div class="controls">
       <input type="text" id="ventureName" class="span6" placeholder="Venture Name"
@@ -265,18 +269,20 @@
                 required></textarea>
     </div>
   </div>
-</div>
 
-<!-- Fourth Step -->
-<div ng-switch-when="Step 4: Venture Media">
+
   <!-- -->
   <div class="control-group">
     <label class="control-label" for="ventureVideoLink">Link to video (Optional, YouTube or Vimeo only, 2 minutes
-      maximum length)</label>
+      maximum length, no proprietary information)</label>
 
     <div class="controls">
       <input type="text" id="ventureVideoLink" class="span6" placeholder="Venture Video Link"
              ng-model="registrationInfo.ventureVideoLink">
+      <span class="help-block">
+        (Example: "http://www.youtube.com/watch?v=8CHCSd2XFDk" <br>
+        or "http://vimeo.com/27344370" without quotes)
+      </span>
     </div>
   </div>
   <!-- -->
@@ -358,7 +364,6 @@
       <div class="clearfix"></div>
     </div>
   </div>
-
 </div>
 
 </div>
@@ -375,7 +380,7 @@
 </ul>
 
 <div class="pull-right">
-  <button style="margin:20px 0;" ng-hide="formInvalid(registerForm)" ng-click="register()" class="btn btn-success">
+  <button style="margin:20px 0;" ng-class="{disabled: formInvalid(registerForm)}" ng-click="register()" class="btn btn-success">
     Confirm and Register
   </button>
 </div>

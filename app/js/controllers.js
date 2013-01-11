@@ -137,7 +137,7 @@ function RegisterCtrl($scope, $http, $location, api_url) {
     'Step 1: Team Info',
     'Step 2: Team Members',
     'Step 3: Venture Info',
-    'Step 4: Venture Media'
+    //'Step 4: Venture Media'
   ];
   $scope.selection = $scope.steps[0];
 
