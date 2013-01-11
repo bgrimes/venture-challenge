@@ -13,6 +13,14 @@ angular.module('ventureChallenge', ['ventureChallenge.filters', 'ventureChalleng
   value('base_url', 'http://localhost/ci-inet-student/app').
   value('api_url',  'http://localhost/ci-inet-student/api').
 
+  /*
+   * Drop the x-requested-with header from the default HTTP config
+   * https://github.com/angular/angular.js/pull/1454
+   */
+  config(['$httpProvider', function($httpProvider) {
+    delete $httpProvider.defaults.headers.common["X-Requested-With"]
+  }]).
+
   config(['$routeProvider', function($routeProvider) {
   var base_dir = '/ci-inet-student/app/';
 
