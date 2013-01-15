@@ -123,7 +123,8 @@
     </div>
     <div class="span6">
       <h4><a href="#/venture/{{venture.id}}">{{venture.ventureInfo.ventureName}}</a></h4>
-      <p>{{venture.ventureInfo.ventureDescription | cut:true:300:' ...' }}</p>
+      <p><b ng-repeat="teamMember in venture.ventureInfo.teamMembers">{{teamMember.fullname}}{{{true: "", false: ", "}[$last]}}</b></p>
+      <p>{{venture.ventureInfo.ventureDescription | cut:true:160:' ...' }}</p>
       <p class="text-info"><a href="#/venture/{{venture.id}}"><i class="icon-chevron-right"></i> Click to View Venture</a></p>
     </div>
     <div class="pull-right">
