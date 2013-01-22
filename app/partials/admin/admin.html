@@ -1,7 +1,6 @@
-<h1>Admin!</h1>
+<h1>Admin</h1>
 
 <div class="venture-list">
-  <a class="btn btn-primary" ng-click="predicate='enabled'; reverse=!reverse"><i class="icon-sort"></i> Sort By Acceptance</a>
   <hr>
   <div ng-repeat="venture in ventures | orderBy:predicate:reverse" class="row">
     <div class="span4">
@@ -14,6 +13,16 @@
       <h4><a href="#/admin/venture/{{venture.id}}">{{venture.ventureInfo.ventureName}}</a></h4>
       <p>{{venture.ventureInfo.ventureDescription}}</p>
       <p class="text-info"><a href="#/admin/venture/{{venture.id}}"><i class="icon-chevron-right"></i> Click to View Venture</a></p>
+      <p>
+        Venture Type: {{venture.ventureInfo.ventureType}}<br>
+        Team Contact Email: <a href="mailto:{{venture.ventureInfo.teamEmail}}">{{venture.ventureInfo.teamEmail}}</a><br>
+        Team Members <b>Name &lt;email&gt; (major - progression)</b>:
+        <ul>
+          <li ng-repeat="teamMember in venture.ventureInfo.teamMembers">
+            {{teamMember.fullname}} &lt;<a href="mailto:{{teamMember.email}}">{{teamMember.email}}</a>&gt; ({{teamMember.major}} - {{teamMember.progression}})
+          </li>
+        </ul>
+      </p>
     </div>
     <div class="pull-right">
       <div class="well" style="padding:0 10px 10px 10px;text-align:center;">
